@@ -1,0 +1,39 @@
+name: master
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Deno
+        uses: denolib/setup-deno@master
+
+      - name: Unit
+        run: |
+          deno test -A tests/unit
+
+  linting:
+    # Doesn't need to be checked in all OS
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Deno
+        uses: denolib/setup-deno@master
+        
+      - name: Check Code FMT
+        run: deno fmt --check
+
+      - name: Check Code Lint
+        run: deno lint --unstable
