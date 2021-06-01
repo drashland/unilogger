@@ -14,13 +14,13 @@ export type LogTypes = "info" | "debug" | "warn" | "error" | "trace" | "fatal";
  */
 export abstract class Logger {
   /**
-       * @param configs - Config used for Logging
-       */
+   * Config used for Logging
+   */
   protected configs: LoggerConfigs;
 
   /**
-       * The level of the log message currently being written.
-       */
+   * The level of the log message currently being written.
+   */
   protected current_log_message_level_name = "";
 
   //////////////////////////////////////////////////////////////////////////////
@@ -28,10 +28,10 @@ export abstract class Logger {
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-       * Construct an object of this class.
-       *
-       * @param configs - Config used for Logging
-       */
+   * Construct an object of this class.
+   *
+   * @param configs - Config used for Logging
+   */
   constructor(configs: LoggerConfigs) {
     if (!configs.tag_string) {
       configs.tag_string = "";
@@ -49,30 +49,30 @@ export abstract class Logger {
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-       * Write a message to the console. Prefixed with the log type
-       *
-       * @param message - The message to be logged
-       *
-       * @returns Return the full logged message.
-       */
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
   abstract debug(message: string): string;
 
   /**
-       * Write a message to the console. Prefixed with the log type
-       *
-       * @param message - The message to be logged
-       *
-       * @returns Return the full logged message.
-       */
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
   abstract info(message: string): string;
 
   /**
-       * Write a message to the console. Prefixed with the log type
-       *
-       * @param message - The message to be logged
-       *
-       * @returns Return the full logged message.
-       */
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
   abstract warn(message: string): string;
 
   /**
@@ -106,6 +106,15 @@ export abstract class Logger {
   // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Constructs the end message that will be used to log out,
+   * using the message and log type
+   *
+   * @param message - The message you wish you log
+   * @param logType - The log type.
+   *
+   * @returns The constructed message, such as `[FATAL] this is my message`, where "[FATAL]" has a red background
+   */
   protected constructFullLogMessage(
     message: string,
     logType: LogTypes,
