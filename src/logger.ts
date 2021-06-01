@@ -1,10 +1,12 @@
 import { colors } from "../deps.ts";
-const encoder = new TextEncoder();
+
+type TagStringFunction = (() => string);
 
 export interface LoggerConfigs {
   // deno-lint-ignore camelcase
   tag_string?: string;
-  tag_string_fns?: { [key: string]: any }; // `any` because it can be a string, or an object with functions and/or strings, and the compiler throws errors when trying to execute certain logic with said type
+  // deno-lint-ignore camelcase
+  tag_string_fns?: { [key: string]: TagStringFunction }; // `any` because it can be a string, or an object with functions and/or strings, and the compiler throws errors when trying to execute certain logic with said type
 }
 
 export type LogTypes = "info" | "debug" | "warn" | "error" | "trace" | "fatal";

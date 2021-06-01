@@ -1,7 +1,6 @@
 import { Rhum } from "../deps.ts";
 import { ConsoleLogger } from "../../mod.ts";
 
-const decoder = new TextDecoder();
 const logger = new ConsoleLogger({});
 
 Rhum.testPlan("tests/loggers/console_logger_test.ts", () => {
