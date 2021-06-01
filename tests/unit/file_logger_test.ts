@@ -1,4 +1,4 @@
-import { Rhum } from "../../deps.ts";
+import { Rhum } from "../deps.ts";
 import { FileLogger } from "../../mod.ts";
 
 const file = "file_logger_test.log";
@@ -65,6 +65,36 @@ Rhum.testPlan("tests/loggers/file_logger_test.ts", () => {
       Rhum.asserts.assertEquals(
         message,
         "\x1b[34m[DEBUG]\x1b[39m This is cool!",
+      );
+    });
+  });
+  Rhum.testSuite("trace()", () => {
+    Rhum.testCase(`writes to console as trace`, () => {
+      const message = logger.trace("This is cool!");
+      const fileContent = decoder.decode(Deno.readFileSync(file));
+      Deno.removeSync(file, { recursive: true });
+      Rhum.asserts.assertEquals(
+        fileContent,
+        "\x1b[41m[TRACE]\x1b[49m This is cool!\n",
+      );
+      Rhum.asserts.assertEquals(
+        message,
+        "\x1b[41m[TRACE]\x1b[49m This is cool!",
+      );
+    });
+  });
+  Rhum.testSuite("fatal()", () => {
+    Rhum.testCase(`writes to console as fatal`, () => {
+      const message = logger.fatal("This is cool!");
+      const fileContent = decoder.decode(Deno.readFileSync(file));
+      Deno.removeSync(file, { recursive: true });
+      Rhum.asserts.assertEquals(
+        fileContent,
+        "\x1b[35m[FATAL]\x1b[39m This is cool!\n",
+      );
+      Rhum.asserts.assertEquals(
+        message,
+        "\x1b[35m[FATAL]\x1b[39m This is cool!",
       );
     });
   });

@@ -84,6 +84,24 @@ export abstract class Logger {
    */
   abstract error(message: string): string;
 
+  /**
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
+  abstract trace(message: string): string;
+
+  /**
+    * Write a message to the console. Prefixed with the log type
+    *
+    * @param message - The message to be logged
+    *
+    * @returns Return the full logged message.
+    */
+  abstract fatal(message: string): string;
+
   //////////////////////////////////////////////////////////////////////////////
   // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -128,19 +146,26 @@ export abstract class Logger {
   //////////////////////////////////////////////////////////////////////////////
 
   private constructFullLogMessage(message: string, logType: LogTypes): string {
+    const messageToColor = `[${logType.toUpperCase()}]`;
     let prefix = "";
     switch (logType) {
       case "debug":
-        prefix = colors.blue(`[${logType.toUpperCase()}]`);
+        prefix = colors.blue(messageToColor);
         break;
       case "error":
-        prefix = colors.red(`[${logType.toUpperCase()}]`);
+        prefix = colors.red(messageToColor);
         break;
       case "info":
-        prefix = colors.green(`[${logType.toUpperCase()}]`);
+        prefix = colors.green(messageToColor);
         break;
       case "warn":
-        prefix = colors.yellow(`[${logType.toUpperCase()}]`);
+        prefix = colors.yellow(messageToColor);
+        break;
+      case "trace":
+        prefix = colors.bgRed(messageToColor);
+        break;
+      case "fatal":
+        prefix = colors.magenta(messageToColor);
         break;
     }
     const tagString = this.getTagStringParsed();

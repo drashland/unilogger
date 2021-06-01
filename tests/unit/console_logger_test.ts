@@ -1,4 +1,4 @@
-import { Rhum } from "../../deps.ts";
+import { Rhum } from "../deps.ts";
 import { ConsoleLogger } from "../../mod.ts";
 
 const decoder = new TextDecoder();
@@ -38,6 +38,24 @@ Rhum.testPlan("tests/loggers/console_logger_test.ts", () => {
       Rhum.asserts.assertEquals(
         message,
         "\x1b[34m[DEBUG]\x1b[39m This is cool!",
+      );
+    });
+  });
+  Rhum.testSuite("trace()", () => {
+    Rhum.testCase(`writes to console as trace`, () => {
+      const message = logger.trace("This is cool!");
+      Rhum.asserts.assertEquals(
+        message,
+        "\x1b[41m[TRACE]\x1b[49m This is cool!",
+      );
+    });
+  });
+  Rhum.testSuite("fatal()", () => {
+    Rhum.testCase(`writes to console as fatal`, () => {
+      const message = logger.fatal("This is cool!");
+      Rhum.asserts.assertEquals(
+        message,
+        "\x1b[35m[FATAL]\x1b[39m This is cool!",
       );
     });
   });

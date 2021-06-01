@@ -54,4 +54,26 @@ export class FileLogger extends Logger {
   public warn(message: string): string {
     return this.logToFile(message, "warn", this.filename);
   }
+
+  /**
+   * Log an fatal message.
+   *
+   * @param message The message to log.
+   *
+   * @returns The full message that will be logged
+   */
+  public fatal(message: string): string {
+    return this.logToFile(message, "fatal", this.filename);
+  }
+
+  /**
+   * Log an trace message.
+   *
+   * @param message The message to log.
+   *
+   * @returns The full message that will be logged
+   */
+  public trace(message: string): string {
+    return this.logToFile(message, "trace", this.filename);
+  }
 }

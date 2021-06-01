@@ -44,4 +44,26 @@ export class ConsoleLogger extends Logger {
   public warn(message: string): string {
     return this.logToConsole(message, "warn");
   }
+
+  /**
+   * Log an warning message.
+   *
+   * @param message The message to log.
+   *
+   * @returns The full message that will be logged
+   */
+  public fatal(message: string): string {
+    return this.logToConsole(message, "fatal");
+  }
+
+  /**
+   * Log an warning message.
+   *
+   * @param message The message to log.
+   *
+   * @returns The full message that will be logged
+   */
+  public trace(message: string): string {
+    return this.logToConsole(message, "trace");
+  }
 }
