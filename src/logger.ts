@@ -7,7 +7,7 @@ export interface LoggerConfigs {
   tag_string_fns?: { [key: string]: any }; // `any` because it can be a string, or an object with functions and/or strings, and the compiler throws errors when trying to execute certain logic with said type
 }
 
-type LogTypes = "info" | "debug" | "warn" | "error" | "trace" | "fatal";
+export type LogTypes = "info" | "debug" | "warn" | "error" | "trace" | "fatal";
 
 /**
  * This Logger is the base logger class for all logger classes.
@@ -106,46 +106,10 @@ export abstract class Logger {
   // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  /**
-     * Log a message to the console, with the message parameter
-     * being modified to include the log type and tag string
-     *
-     * @param message The original message to log
-     * @param logType The type of logging. Determined the the prefix, eg "[<log type>] <tag string> <message>"
-     *
-     * @returns The end message that will be logged
-     */
-  protected logToConsole(message: string, logType: LogTypes): string {
-    const fullLogMessage = this.constructFullLogMessage(message, logType);
-    console.log(fullLogMessage);
-    return fullLogMessage;
-  }
-
-  /**
-     * Log a message to a file, with the message parameter
-     * being modified to include the log type and tag string
-     *
-     * @param message The original message to log
-     * @param logType The type of logging. Determined the the prefix, eg "[<log type>] <tag string> <message>"
-     * @param filename The name of the file to write the log to
-     *
-     * @returns The end message that will be logged
-     */
-  protected logToFile(
+  protected constructFullLogMessage(
     message: string,
     logType: LogTypes,
-    filename: string,
   ): string {
-    const line = this.constructFullLogMessage(message, logType);
-    Deno.writeFileSync(filename, encoder.encode(line + "\n"), { append: true });
-    return line;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////
-  // FILE MARKER - METHODS - ABSTRACT //////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////
-
-  private constructFullLogMessage(message: string, logType: LogTypes): string {
     const messageToColor = `[${logType.toUpperCase()}]`;
     let prefix = "";
     switch (logType) {
@@ -177,11 +141,15 @@ export abstract class Logger {
     return message;
   }
 
+  //////////////////////////////////////////////////////////////////////////////
+  // FILE MARKER - METHODS - PRIVATE ///////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
   /**
-       * Get the parsed version of the raw tag string.
-       *
-       * @return The tag string
-       */
+   * Get the parsed version of the raw tag string.
+   *
+   * @return The tag string
+   */
   private getTagStringParsed(): string {
     if (this.configs.tag_string && this.configs.tag_string.trim() == "") {
       return "";

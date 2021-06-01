@@ -1,4 +1,4 @@
-import { Logger } from "./logger.ts";
+import { Logger, LogTypes } from "./logger.ts";
 
 export class ConsoleLogger extends Logger {
   /**
@@ -65,5 +65,24 @@ export class ConsoleLogger extends Logger {
    */
   public trace(message: string): string {
     return this.logToConsole(message, "trace");
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // FILE MARKER - METHODS - PRIVATE ///////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Log a message to the console, with the message parameter
+   * being modified to include the log type and tag string
+   *
+   * @param message The original message to log
+   * @param logType The type of logging. Determined the the prefix, eg "[<log type>] <tag string> <message>"
+   *
+   * @returns The end message that will be logged
+   */
+  private logToConsole(message: string, logType: LogTypes): string {
+    const fullLogMessage = this.constructFullLogMessage(message, logType);
+    console.log(fullLogMessage);
+    return fullLogMessage;
   }
 }

@@ -1,4 +1,6 @@
-import { Logger, LoggerConfigs } from "./logger.ts";
+import { Logger, LoggerConfigs, LogTypes } from "./logger.ts";
+
+const encoder = new TextEncoder();
 
 interface FileLoggerConfigs extends LoggerConfigs {
   file: string;
@@ -75,5 +77,29 @@ export class FileLogger extends Logger {
    */
   public trace(message: string): string {
     return this.logToFile(message, "trace", this.filename);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // FILE MARKER - METHODS - PRIVATE ///////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Log a message to a file, with the message parameter
+   * being modified to include the log type and tag string
+   *
+   * @param message The original message to log
+   * @param logType The type of logging. Determined the the prefix, eg "[<log type>] <tag string> <message>"
+   * @param filename The name of the file to write the log to
+   *
+   * @returns The end message that will be logged
+   */
+  private logToFile(
+    message: string,
+    logType: LogTypes,
+    filename: string,
+  ): string {
+    const line = this.constructFullLogMessage(message, logType);
+    Deno.writeFileSync(filename, encoder.encode(line + "\n"), { append: true });
+    return line;
   }
 }
