@@ -18,7 +18,7 @@ export const preReleaseFiles = [
     replaceTheRegex: regexes.egg_json,
     replaceWith: `"version": "{{ thisModulesLatestVersion }}"`,
   },
-   {
+  {
     filename: "./README.md",
     replaceTheRegex: regexes.urls,
     replaceWith: `unilogger@v{{ thisModulesLatestVersion }}`,

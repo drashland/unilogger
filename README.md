@@ -1,11 +1,17 @@
-# Loggers
+# Unilogger
 
 A service to help log messages in the console or write logs to a file.
 
 ## Table of Contents
 
+- [API Documentation](#api-documentation)
 - [Creating a Logger](#creating-a-logger)
 - [Using a Logger](#using-a-logger)
+
+## API Documentation
+
+You can find the API documentation
+[here](https://doc.deno.land/https/deno.land/x/unilogger@v1.0.0/mod.ts)
 
 ## Creating a Logger
 
