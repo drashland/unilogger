@@ -7,7 +7,7 @@ export const regexes = {
   deps_std: /std@[0-9.]+[0-9.]+[0-9]/g,
   // deno-lint-ignore camelcase
   egg_json: /"version": ".+"/,
-  urls: /dmm@v[0-9\.]+[0-9\.]+[0-9\.]/g,
+  urls: /unilogger@v[0-9\.]+[0-9\.]+[0-9\.]/g,
   // deno-lint-ignore camelcase
   yml_deno: /deno: \[".+"\]/g,
 };
@@ -17,6 +17,11 @@ export const preReleaseFiles = [
     filename: "./egg.json",
     replaceTheRegex: regexes.egg_json,
     replaceWith: `"version": "{{ thisModulesLatestVersion }}"`,
+  },
+   {
+    filename: "./README.md",
+    replaceTheRegex: regexes.urls,
+    replaceWith: `unilogger@v{{ thisModulesLatestVersion }}`,
   },
 ];
 
