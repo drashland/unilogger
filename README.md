@@ -12,8 +12,8 @@ A service to help log messages in the console or write logs to a file.
 To use a logger, you must first create one:
 
 ```ts
-import { ConsoleLogger } from "https://raw.githubusercontent.com/drashland/services/<latest version>/loggers/console_logger.ts";
-import { FileLogger } from "https://raw.githubusercontent.com/drashland/services/<latest version>/loggers/file_logger.ts";
+import { ConsoleLogger } from "https://deno.land/x/unilogger@v1.0.0/mod.ts";
+import { FileLogger } from "https://deno.land/x/unilogger@v1.0.0/mod.ts";
 
 const consoleLogger = new ConsoleLogger();
 const fileLogger = new FileLogger({ file: "file.log" }); // NOTE: `file` is request here, it's the filename which logging will be sent to
