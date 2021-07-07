@@ -3,7 +3,7 @@
   "description": "About
   Logger utility module for Deno",
   "homepage": "https://github.com/drashland/unilogger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "stable": true,
   "files": [
     "./mod.ts",
