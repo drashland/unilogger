@@ -3,6 +3,7 @@ import { colors } from "../deps.ts";
 type TagStringFunction = (() => string);
 
 export interface LoggerConfigs {
+  level: LogTypes & "all" | "off";
   // deno-lint-ignore camelcase
   tag_string?: string;
   // deno-lint-ignore camelcase
@@ -35,6 +36,10 @@ export abstract class Logger {
    * @param configs - Config used for Logging
    */
   constructor(configs: LoggerConfigs) {
+    if (!configs.level) {
+      configs.level = "debug";
+    }
+
     if (!configs.tag_string) {
       configs.tag_string = "";
     }
