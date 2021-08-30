@@ -228,7 +228,6 @@ export abstract class Logger {
       );
     }
 
-    // Add a space so the log message isn't up against the tag string
-    return tagString.trim() + " ";
+    return tagString;
   }
 }
