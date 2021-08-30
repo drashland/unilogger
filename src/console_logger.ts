@@ -88,6 +88,9 @@ export class ConsoleLogger extends Logger {
     if (!this.shouldLog(logType)) {
       return;
     }
+
+    this.current_log_message_level_name = logType;
+
     const fullLogMessage = this.constructFullLogMessage(message, logType);
     console.log(fullLogMessage);
     return fullLogMessage;

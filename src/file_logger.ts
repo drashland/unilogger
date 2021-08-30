@@ -113,6 +113,9 @@ export class FileLogger extends Logger {
     if (!this.shouldLog(logType)) {
       return;
     }
+
+    this.current_log_message_level_name = logType;
+
     const line = this.constructFullLogMessage(message, logType);
     Deno.writeFileSync(filename, encoder.encode(line + "\n"), { append: true });
     return line;
