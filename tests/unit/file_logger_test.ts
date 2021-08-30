@@ -4,6 +4,7 @@ import { FileLogger } from "../../mod.ts";
 const file = "file_logger_test.log";
 const decoder = new TextDecoder();
 const logger = new FileLogger({
+  level: "all",
   file,
 });
 
@@ -101,6 +102,7 @@ Rhum.testPlan("tests/loggers/file_logger_test.ts", () => {
   Rhum.testSuite("Configs", () => {
     Rhum.testCase("Uses the tag string", () => {
       const l = new FileLogger({
+        level: "info",
         file,
         tag_string: "{bingo} | {bongo}",
         tag_string_fns: {
@@ -117,11 +119,11 @@ Rhum.testPlan("tests/loggers/file_logger_test.ts", () => {
       Deno.removeSync(file, { recursive: true });
       Rhum.asserts.assertEquals(
         fileContent,
-        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D  This is cool!\n",
+        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D This is cool!\n",
       );
       Rhum.asserts.assertEquals(
         message,
-        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D  This is cool!",
+        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D This is cool!",
       );
     });
   });

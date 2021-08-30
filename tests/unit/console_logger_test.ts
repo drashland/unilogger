@@ -1,7 +1,12 @@
 import { Rhum } from "../deps.ts";
 import { ConsoleLogger } from "../../mod.ts";
 
-const logger = new ConsoleLogger({});
+// Ensure no logging is done in the test output
+console.log = () => true;
+
+const logger = new ConsoleLogger({
+  level: "all",
+});
 
 Rhum.testPlan("tests/loggers/console_logger_test.ts", () => {
   Rhum.testSuite("info()", () => {
@@ -61,6 +66,7 @@ Rhum.testPlan("tests/loggers/console_logger_test.ts", () => {
   Rhum.testSuite("Configs", () => {
     Rhum.testCase("Uses the tag string", () => {
       const l = new ConsoleLogger({
+        level: "all",
         tag_string: "{bingo} | {bongo} |",
         tag_string_fns: {
           bingo() {
@@ -74,7 +80,7 @@ Rhum.testPlan("tests/loggers/console_logger_test.ts", () => {
       const message = l.info("This is cool!");
       Rhum.asserts.assertEquals(
         message,
-        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D |  This is cool!",
+        "\x1b[32m[INFO]\x1b[39m BINGO! | BONGO :D | This is cool!",
       );
     });
   });
