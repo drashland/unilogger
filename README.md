@@ -21,8 +21,8 @@ To use a logger, you must first create one:
 import { ConsoleLogger } from "https://deno.land/x/unilogger@v1.0.1/mod.ts";
 import { FileLogger } from "https://deno.land/x/unilogger@v1.0.1/mod.ts";
 
-const consoleLogger = new ConsoleLogger();
-const fileLogger = new FileLogger({ file: "file.log" }); // NOTE: `file` is request here, it's the filename which logging will be sent to
+const consoleLogger = new ConsoleLogger({});
+const fileLogger = new FileLogger({ file: "file.log" }); // NOTE: `file` is required here, it's the filename which logging will be sent to
 ```
 
 ## Using a Logger
@@ -30,8 +30,9 @@ const fileLogger = new FileLogger({ file: "file.log" }); // NOTE: `file` is requ
 Both logger types provide the same API methods. The only difference is, one logs
 to the console, one logs to a file.
 
-Within the constructor, you can pass in `tag_string` and `tag_string_fns`. Both
-of these allow you to pass in custom data to the message if you wish to:
+Within the constructor, you can pass in `level`, `tag_string` and
+`tag_string_fns`. Both of these allow you to pass in custom data to the message
+if you wish to:
 
 ```ts
 const logger = new ConsoleLogger({ // or FileLogger
@@ -44,8 +45,27 @@ const logger = new ConsoleLogger({ // or FileLogger
       return "The Moon";
     },
   },
+  level: "error", // will log any calls to `error()` and `fatal()`
 });
 ```
 
 Then calling `logger.info("Hello")` (or any other method) will display
 `[INFO] Drashland | The Moon | Hello`
+
+You can check the
+[API Reference](https://doc.deno.land/https/deno.land/x/unilogger/mod.ts) for
+what is acceptable to pass to `level`. Below is what levels will log which
+types:
+
+```
+all: logs all messages
+trace: logs trace, debug, info, warn, error, fatal
+debug: logs debug, info, warn, error, fatal
+info: logs info, warn, error, fatal
+warn: logs warn, error, fatal,
+error: logs error, fatal
+fatal: logs fatal
+off: does not log any messages
+```
+
+So this means that a `logger.warn("hello")` will not log if `level` is `error`.

@@ -27,7 +27,7 @@ export abstract class Logger {
    */
   protected current_log_message_level_name!: string;
 
-  protected log_ranks: {[key: string]: number} = {
+  protected log_ranks: { [key: string]: number } = {
     "trace": 6,
     "debug": 5,
     "info": 4,
@@ -72,7 +72,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract debug(message: string): string | void ;
+  abstract debug(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -81,7 +81,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract info(message: string): string | void ;
+  abstract info(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -90,7 +90,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract warn(message: string): string | void ;
+  abstract warn(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -99,7 +99,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract error(message: string): string | void ;
+  abstract error(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -108,16 +108,16 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract trace(message: string): string | void ;
+  abstract trace(message: string): string | void;
 
   /**
-    * Write a message to the console. Prefixed with the log type
-    *
-    * @param message - The message to be logged
-    *
-    * @returns Return the full logged message.
-    */
-  abstract fatal(message: string): string | void ;
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
+  abstract fatal(message: string): string | void;
 
   //////////////////////////////////////////////////////////////////////////////
   // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
