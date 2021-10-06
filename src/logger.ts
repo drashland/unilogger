@@ -3,6 +3,7 @@ import { colors } from "../deps.ts";
 type TagStringFunction = (() => string);
 
 export interface LoggerConfigs {
+  level?: LogTypes | "all" | "off";
   // deno-lint-ignore camelcase
   tag_string?: string;
   // deno-lint-ignore camelcase
@@ -21,9 +22,19 @@ export abstract class Logger {
   protected configs: LoggerConfigs;
 
   /**
-   * The level of the log message currently being written.
+   * The level of the log message currently being written. This is used to
+   * determine if the message can be logged based on its rank.
    */
-  protected current_log_message_level_name = "";
+  protected current_log_message_level_name!: string;
+
+  protected log_ranks: { [key: string]: number } = {
+    "trace": 6,
+    "debug": 5,
+    "info": 4,
+    "warn": 3,
+    "error": 2,
+    "fatal": 1,
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // FILE MARKER - CONSTRUCTOR /////////////////////////////////////////////////
@@ -35,6 +46,10 @@ export abstract class Logger {
    * @param configs - Config used for Logging
    */
   constructor(configs: LoggerConfigs) {
+    if (!configs.level) {
+      configs.level = "debug";
+    }
+
     if (!configs.tag_string) {
       configs.tag_string = "";
     }
@@ -47,7 +62,7 @@ export abstract class Logger {
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  // FILE MARKER - METHODS - ABSTRACT //////////////////////////////////////////
+  // FILE MARKER - METHODS - PUBLIC ////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
   /**
@@ -57,7 +72,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract debug(message: string): string;
+  abstract debug(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -66,7 +81,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract info(message: string): string;
+  abstract info(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -75,7 +90,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract warn(message: string): string;
+  abstract warn(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -84,7 +99,7 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract error(message: string): string;
+  abstract error(message: string): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -93,16 +108,16 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract trace(message: string): string;
+  abstract trace(message: string): string | void;
 
   /**
-    * Write a message to the console. Prefixed with the log type
-    *
-    * @param message - The message to be logged
-    *
-    * @returns Return the full logged message.
-    */
-  abstract fatal(message: string): string;
+   * Write a message to the console. Prefixed with the log type
+   *
+   * @param message - The message to be logged
+   *
+   * @returns Return the full logged message.
+   */
+  abstract fatal(message: string): string | void;
 
   //////////////////////////////////////////////////////////////////////////////
   // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
@@ -152,6 +167,30 @@ export abstract class Logger {
     return message;
   }
 
+  /**
+   * Should the message be logged based on its rank?
+   *
+   * @param logType
+   */
+  protected shouldLog(logType: LogTypes): boolean {
+    if (this.configs.level == "off") {
+      return false;
+    }
+
+    if (this.configs.level == "all") {
+      return true;
+    }
+
+    const messageRank = this.log_ranks[logType];
+    const configRank = this.log_ranks[this.configs.level!];
+
+    if (messageRank <= configRank) {
+      return true;
+    }
+
+    return false;
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   // FILE MARKER - METHODS - PRIVATE ///////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -189,7 +228,6 @@ export abstract class Logger {
       );
     }
 
-    // Add a space so the log message isn't up against the tag string
-    return tagString + " ";
+    return tagString;
   }
 }
