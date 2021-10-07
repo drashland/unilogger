@@ -11,15 +11,15 @@ A service to help log messages in the console or write logs to a file.
 ## API Documentation
 
 You can find the API documentation
-[here](https://doc.deno.land/https/deno.land/x/unilogger@v1.0.1/mod.ts)
+[here](https://doc.deno.land/https/deno.land/x/unilogger@v1.0.3/mod.ts)
 
 ## Creating a Logger
 
 To use a logger, you must first create one:
 
 ```ts
-import { ConsoleLogger } from "https://deno.land/x/unilogger@v1.0.1/mod.ts";
-import { FileLogger } from "https://deno.land/x/unilogger@v1.0.1/mod.ts";
+import { ConsoleLogger } from "https://deno.land/x/unilogger@v1.0.3/mod.ts";
+import { FileLogger } from "https://deno.land/x/unilogger@v1.0.3/mod.ts";
 
 const consoleLogger = new ConsoleLogger({});
 const fileLogger = new FileLogger({ file: "file.log" }); // NOTE: `file` is required here, it's the filename which logging will be sent to
