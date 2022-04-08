@@ -1,1 +1,1 @@
-export { Rhum } from "https://deno.land/x/rhum@v1.1.13/mod.ts";
+export { Rhum } from "https://deno.land/x/rhum@v1.1.14/mod.ts";
