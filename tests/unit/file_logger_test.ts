@@ -74,7 +74,7 @@ Deno.test("debug()", async (t) => {
 
 Deno.test("trace()", async (t) => {
   await t.step(`writes to a file: ${file} as trace`, () => {
-    const message = logger.debug("This is cool!");
+    const message = logger.trace("This is cool!");
     const fileContent = decoder.decode(Deno.readFileSync(file));
     Deno.removeSync(file, { recursive: true });
     assertEquals(

@@ -50,7 +50,7 @@ Deno.test("debug()", async (t) => {
 
 Deno.test("trace()", async (t) => {
   await t.step(`writes to console as trace`, () => {
-    const message = logger.debug("This is cool!");
+    const message = logger.trace("This is cool!");
     assertEquals(
       message,
       "\x1b[41m[TRACE]\x1b[49m This is cool!",
@@ -60,7 +60,7 @@ Deno.test("trace()", async (t) => {
 
 Deno.test("fatal()", async (t) => {
   await t.step(`writes to console as fatal`, () => {
-    const message = logger.debug("This is cool!");
+    const message = logger.fatal("This is cool!");
     assertEquals(
       message,
       "\x1b[35m[FATAL]\x1b[39m This is cool!",
