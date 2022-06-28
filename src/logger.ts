@@ -1,6 +1,6 @@
 import { colors } from "../deps.ts";
 
-type TagStringFunction = (() => string);
+type TagStringFunction = () => string;
 
 export interface LoggerConfigs {
   level?: LogTypes | "all" | "off";
