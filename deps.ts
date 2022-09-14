@@ -1,2 +1,2 @@
-import * as colors from "https://deno.land/std@0.150.0/fmt/colors.ts";
+import * as colors from "https://deno.land/std@0.155.0/fmt/colors.ts";
 export { colors };
