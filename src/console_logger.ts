@@ -12,8 +12,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public debug(message: string): string | void {
-    return this.#logToConsole(message, "debug");
+  public debug(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "debug", params);
   }
 
   /**
@@ -23,8 +23,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public error(message: string): string | void {
-    return this.#logToConsole(message, "error");
+  public error(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "error", params);
   }
 
   /**
@@ -34,8 +34,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public info(message: string): string | void {
-    return this.#logToConsole(message, "info");
+  public info(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "info", params);
   }
 
   /**
@@ -45,8 +45,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public warn(message: string): string | void {
-    return this.#logToConsole(message, "warn");
+  public warn(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "warn", params);
   }
 
   /**
@@ -56,8 +56,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public fatal(message: string): string | void {
-    return this.#logToConsole(message, "fatal");
+  public fatal(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "fatal", params);
   }
 
   /**
@@ -67,8 +67,8 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public trace(message: string): string | void {
-    return this.#logToConsole(message, "trace");
+  public trace(message: string, ...params: unknown[]): string | void {
+    return this.#logToConsole(message, "trace", params);
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -84,14 +84,22 @@ export class ConsoleLogger extends Logger {
    *
    * @returns The end message that will be logged
    */
-  #logToConsole(message: string, logType: LogTypes): string | void {
+  #logToConsole(
+    message: string,
+    logType: LogTypes,
+    params: unknown[],
+  ): string | void {
     if (!this.shouldLog(logType)) {
       return;
     }
 
     this.current_log_message_level_name = logType;
 
-    const fullLogMessage = this.constructFullLogMessage(message, logType);
+    const fullLogMessage = this.constructFullLogMessage(
+      message,
+      logType,
+      params,
+    );
     console.log(fullLogMessage);
     return fullLogMessage;
   }

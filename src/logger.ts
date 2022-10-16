@@ -76,7 +76,10 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract debug(message: string): string | void;
+  abstract debug(
+    message: string | unknown,
+    ...params: unknown[]
+  ): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -139,6 +142,7 @@ export abstract class Logger {
   protected constructFullLogMessage(
     message: string,
     logType: LogTypes,
+    params: unknown[],
   ): string {
     const messageToColor = `[${logType.toUpperCase()}]`;
     let prefix = "";
@@ -167,7 +171,11 @@ export abstract class Logger {
     if (tagString) {
       message = tagString + " " + message;
     }
+
     message = prefix + " " + message;
+
+    message = this.#fillParams(message, params);
+
     return message;
   }
 
@@ -233,5 +241,47 @@ export abstract class Logger {
     }
 
     return tagString;
+  }
+
+  /**
+   * Fill the parameters in the message.
+   * @param message The message to fill.
+   * @param params The params to use to fill the message.
+   * @return The message with all parameters used. If number of placeholders is
+   * greater than the number of params, then those placeholders will be returned
+   * as "{}" in the message.
+   */
+  #fillParams(message: string, params: unknown[]): string {
+    if (params && params.length > 0) {
+      try {
+        const parts = message.split("{}");
+
+        return parts.map((part: string, index: number) => {
+            if ((index + 1) >= parts.length) {
+              return part;
+            }
+
+            const param = params[index];
+
+            if (typeof param === "function") {
+              part += param.name;
+              return part;
+            }
+
+            if (typeof param === "object") {
+              part += JSON.stringify(param);
+              return part;
+            }
+
+            part += params[index] ?? "{}";
+            return part;
+          })
+          .join("");
+      } catch (_error) {
+        // Not sure what to do here...
+      }
+    }
+
+    return message;
   }
 }
