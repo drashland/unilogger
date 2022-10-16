@@ -45,7 +45,11 @@ export abstract class Logger {
    *
    * @param configs - Config used for Logging
    */
-  constructor(configs: LoggerConfigs) {
+  constructor(configs?: LoggerConfigs) {
+    if (!configs) {
+      configs = {};
+    }
+
     if (!configs.level) {
       configs.level = "debug";
     }
