@@ -72,7 +72,8 @@ So this means that a `logger.warn("hello")` will not log if `level` is `error`.
 
 ## Log message params
 
-Log messages can take in params by specifying `{}` in the log message. For example:
+Log messages can take in params by specifying `{}` in the log message. For
+example:
 
 ```typescript
 logger.debug("Hello {}", "world")                  => Outputs "[DEBUG] Hello world"
