@@ -69,3 +69,20 @@ off: does not log any messages
 ```
 
 So this means that a `logger.warn("hello")` will not log if `level` is `error`.
+
+## Log message params
+
+Log messages can take in params by specifying `{}` in the log message. For
+example:
+
+```typescript
+logger.debug("Hello {}", "world")                  => Outputs "[DEBUG] Hello world"
+logger.debug("Hello {} {}", "world", "world")      => Outputs "[DEBUG] Hello world world"
+logger.debug("Hello {} {}", "world")               => Outputs "[DEBUG] Hello world {}"
+logger.debug("Hello {} {}", "world", false)        => Outputs "[DEBUG] Hello world false"
+logger.debug("Hello {} {}", "world", true)         => Outputs "[DEBUG] Hello world true"
+logger.debug("Hello {} {}", "world", SomeClass)    => Outputs "[DEBUG] Hello world SomeClass"
+logger.debug("Hello {} {}", "world", funcDec)      => Outputs "[DEBUG] Hello world funcDec"
+logger.debug("Hello {} {}", "world", funcExp)      => Outputs "[DEBUG] Hello world funcExp"
+logger.debug("Hello {}", "world", funcExp, "nope") => Outputs "[DEBUG] Hello world"
+```

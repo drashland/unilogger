@@ -45,7 +45,11 @@ export abstract class Logger {
    *
    * @param configs - Config used for Logging
    */
-  constructor(configs: LoggerConfigs) {
+  constructor(configs?: LoggerConfigs) {
+    if (!configs) {
+      configs = {};
+    }
+
     if (!configs.level) {
       configs.level = "debug";
     }
@@ -72,7 +76,10 @@ export abstract class Logger {
    *
    * @returns Return the full logged message.
    */
-  abstract debug(message: string): string | void;
+  abstract debug(
+    message: string | unknown,
+    ...params: unknown[]
+  ): string | void;
 
   /**
    * Write a message to the console. Prefixed with the log type
@@ -135,6 +142,7 @@ export abstract class Logger {
   protected constructFullLogMessage(
     message: string,
     logType: LogTypes,
+    params: unknown[],
   ): string {
     const messageToColor = `[${logType.toUpperCase()}]`;
     let prefix = "";
@@ -163,7 +171,11 @@ export abstract class Logger {
     if (tagString) {
       message = tagString + " " + message;
     }
+
     message = prefix + " " + message;
+
+    message = this.fillParams(message, params);
+
     return message;
   }
 
@@ -192,15 +204,75 @@ export abstract class Logger {
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  // FILE MARKER - METHODS - PRIVATE ///////////////////////////////////////////
+  // FILE MARKER - METHODS - PROTECTED /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Fill the parameters in the message.
+   * @param message The message to fill.
+   * @param params The params to use to fill the message.
+   * @return The message with all parameters used. If number of placeholders is
+   * greater than the number of params, then those placeholders will be returned
+   * as "{}" in the message.
+   */
+  protected fillParams(message: string, params: unknown[]): string {
+    if (params && params.length > 0) {
+      try {
+        const parts = message.split("{}");
+
+        return parts.map((part: string, index: number) => {
+          // If there are no more parts, then there is no reason to continue
+          // adding params to the message
+          if ((index + 1) >= parts.length) {
+            return part;
+          }
+
+          const param = params[index];
+
+          // If the param is a function, then log its name. We do not intend
+          // to output its implementation.
+          if (typeof param === "function") {
+            part += param.name;
+            return part;
+          }
+
+          // If the param is an object, then we can JSON stringify it to show
+          // a proper "string object" form of it. If a different output is
+          // required, then the extended class can do so.
+          if (typeof param === "object") {
+            part += JSON.stringify(param);
+            return part;
+          }
+
+          if (param === undefined) {
+            // If the param is undefined because it was not given, then we use
+            // the placeholder
+            if (index >= params.length) {
+              return part += "{}";
+            }
+
+            // Otherwise, it was given as `undefined`, so we output exactly that
+            return part += "undefined";
+          }
+
+          part += params[index] ?? "{}";
+          return part;
+        })
+          .join("");
+      } catch (_error) {
+        // Not sure what to do here...
+      }
+    }
+
+    return message;
+  }
 
   /**
    * Get the parsed version of the raw tag string.
    *
    * @return The tag string
    */
-  private getTagStringParsed(): string {
+  protected getTagStringParsed(): string {
     if (this.configs.tag_string && this.configs.tag_string.trim() == "") {
       return "";
     }

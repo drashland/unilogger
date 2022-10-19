@@ -32,8 +32,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public debug(message: string): string | void {
-    return this.#logToFile(message, "debug", this.filename);
+  public debug(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "debug", this.filename, params);
   }
 
   /**
@@ -43,8 +43,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public error(message: string): string | void {
-    return this.#logToFile(message, "error", this.filename);
+  public error(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "error", this.filename, params);
   }
 
   /**
@@ -54,8 +54,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public info(message: string): string | void {
-    return this.#logToFile(message, "info", this.filename);
+  public info(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "info", this.filename, params);
   }
 
   /**
@@ -65,8 +65,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public warn(message: string): string | void {
-    return this.#logToFile(message, "warn", this.filename);
+  public warn(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "warn", this.filename, params);
   }
 
   /**
@@ -76,8 +76,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public fatal(message: string): string | void {
-    return this.#logToFile(message, "fatal", this.filename);
+  public fatal(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "fatal", this.filename, params);
   }
 
   /**
@@ -87,8 +87,8 @@ export class FileLogger extends Logger {
    *
    * @returns The full message that will be logged
    */
-  public trace(message: string): string | void {
-    return this.#logToFile(message, "trace", this.filename);
+  public trace(message: string, ...params: unknown[]): string | void {
+    return this.#logToFile(message, "trace", this.filename, params);
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -109,6 +109,7 @@ export class FileLogger extends Logger {
     message: string,
     logType: LogTypes,
     filename: string,
+    params: unknown[],
   ): string | void {
     if (!this.shouldLog(logType)) {
       return;
@@ -116,7 +117,7 @@ export class FileLogger extends Logger {
 
     this.current_log_message_level_name = logType;
 
-    const line = this.constructFullLogMessage(message, logType);
+    const line = this.constructFullLogMessage(message, logType, params);
     Deno.writeFileSync(filename, encoder.encode(line + "\n"), { append: true });
     return line;
   }
